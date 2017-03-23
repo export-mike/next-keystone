@@ -1,6 +1,5 @@
 require('dotenv').config();
 const keystone = require('keystone');
-// const express = require('express');
 const next = require('next');
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });

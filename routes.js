@@ -5,7 +5,7 @@ module.exports = nextApp => keystoneApp => {
 	});
 
 	keystoneApp.get('/b', (req, res) => {
-		return nextApp.render(req, res, '/a', req.query);
+		return nextApp.render(req, res, '/a', { query: req.query, hi: 'test' });
 	});
 
 	keystoneApp.get('*', (req, res) => {
