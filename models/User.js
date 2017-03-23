@@ -20,7 +20,13 @@ User.schema.virtual('canAccessKeystone').get(function () {
 	return this.isAdmin;
 });
 
+User.publicMethods = {
+	list: true,
+};
 
+User.sanitize = ({ name, email }) => ({ name, email });
+
+User.sanitizeForPublic = results => results.map(User.sanitize);
 /**
  * Registration
  */
