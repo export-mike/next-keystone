@@ -20,14 +20,20 @@ User.schema.virtual('canAccessKeystone').get(function () {
 	return this.isAdmin;
 });
 
+User.sanitize = ({ name, email }) => ({ name, email });
+
 User.publicMethods = {
-	list: {
-		sanitize: ({ name, email }) => ({ name, email }),
-	},
+	list: true,
 	post: {
-		sanitize: ({ name, email }) => ({ name, email }),
 		validation: {
 			body: Joi.schema({
+				name: Joi.object().keys({
+					first: Joi.string(),
+					last: Joi.string(),
+				}),
+				email: Joi.string().email(),
+			}),
+			params: Joi.schema({
 				name: Joi.object().keys({
 					first: Joi.string(),
 					last: Joi.string(),
