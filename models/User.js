@@ -1,11 +1,11 @@
-var keystone = require('keystone');
-var Types = keystone.Field.Types;
-
+const keystone = require('keystone');
+const Types = keystone.Field.Types;
+const Joi = require('joi');
 /**
  * User Model
  * ==========
  */
-var User = new keystone.List('User');
+const User = new keystone.List('User');
 
 User.add({
 	name: { type: Types.Name, required: true, index: true },
@@ -21,12 +21,23 @@ User.schema.virtual('canAccessKeystone').get(function () {
 });
 
 User.publicMethods = {
-	list: true,
+	list: {
+		sanitize: ({ name, email }) => ({ name, email }),
+	},
+	post: {
+		sanitize: ({ name, email }) => ({ name, email }),
+		validation: {
+			body: Joi.schema({
+				name: Joi.object().keys({
+					first: Joi.string(),
+					last: Joi.string(),
+				}),
+				email: Joi.string().email(),
+			}),
+		},
+	},
 };
 
-User.sanitize = ({ name, email }) => ({ name, email });
-
-User.sanitizeForPublic = results => results.map(User.sanitize);
 /**
  * Registration
  */

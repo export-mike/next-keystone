@@ -1,8 +1,12 @@
 export default (list) => ({
 	model: {
 		find: () => {
-			debugger;
 			return fetch(`/api/${list.toLowerCase()}`)
+			.then(checkHttpStatus)
+			.then(parseJSON);
+		},
+		getById: id => {
+			return fetch(`/api/${list.toLowerCase}/${id}`)
 			.then(checkHttpStatus)
 			.then(parseJSON);
 		},
